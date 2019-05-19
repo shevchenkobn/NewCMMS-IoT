@@ -9,6 +9,7 @@ process.on('unhandledRejection', (err, p) => {
     console.error(p);
     process.exit(1);
 });
+run();
 async function run() {
     await index_1.initialize(false);
     const cli = readline_1.createInterface({
