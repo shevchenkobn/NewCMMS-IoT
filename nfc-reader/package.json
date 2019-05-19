@@ -10,12 +10,12 @@
     "i:g:dev:win": "npm i rimraf tslint nodemon tslint-config-airbnb -g -D",
     "r:g:dev:win": "npm r rimraf tslint nodemon tslint-config-airbnb -g -D",
     "build": "rimraf ./dist && ttsc",
-    "start": "node ./dist/tools/listen",
+    "start": "node ./dist/tools/scan",
     "start:b": "npm run build && npm run start",
-    "start:brk": "node --inspect-brk=9229 ./dist/tools/listen",
-    "start:b:brk": "npm run build && node --inspect-brk=9229 ./dist/tools/listen",
-    "start:dev": "node --inspect=9229 ./dist/tools/switch",
-    "start:b:dev": "npm run build && node --inspect=9229 ./dist/tools/listen",
+    "start:brk": "node --inspect-brk=9229 ./dist/tools/scan",
+    "start:b:brk": "npm run build && node --inspect-brk=9229 ./dist/tools/scan",
+    "start:dev": "node --inspect=9229 ./dist/tools/scan",
+    "start:b:dev": "npm run build && node --inspect=9229 ./dist/tools/scan",
     "watch": "nodemon -w src/ -w config/ -e ts,yaml -x \"npm run build\""
   },
   "engines": {
@@ -29,6 +29,7 @@
     "bluebird-global": "^1.0.1",
     "config": "^3.1.0",
     "js-yaml": "^3.13.1",
+    "pn532": "^1.0.0",
     "ts-optchain": "^0.1.7",
     "tslib": "^1.9.3"
   },

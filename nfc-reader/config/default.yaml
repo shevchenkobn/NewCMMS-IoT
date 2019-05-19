@@ -1,1 +1,1 @@
-bcmPinNum: 23
+i2cDevicePath: /dev/i2c-1
