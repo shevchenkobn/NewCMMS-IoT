@@ -2,12 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_1 = require("readline");
 const index_1 = require("../index");
-process.on('unhandledRejection', (err, p) => {
+process.once('unhandledRejection', (err, p) => {
     console.error('Rejection error');
     console.error(err);
     console.error('Promise:');
     console.error(p);
-    process.exit(1);
+    index_1.dispose().then(() => process.exit(1));
+});
+process.once('uncaughtException', err => {
+    console.error('Unhandled error');
+    console.error(err);
+    index_1.dispose().then(() => process.exit(1));
 });
 run();
 async function run() {
@@ -21,10 +26,8 @@ async function run() {
     cli.write('The pin is initialized! Press enter to switch the led on or off.');
     cli.prompt(true);
     const clear = async () => {
-        index_1.dispose().then(() => {
-            cli.write('Disposing and exiting...');
-            return index_1.dispose();
-        });
+        cli.write('Disposing and exiting...');
+        return index_1.dispose();
     };
     cli.on('SIGINT', clear);
     cli.on('SIGTSTP', clear);

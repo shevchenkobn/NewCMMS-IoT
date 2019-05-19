@@ -1,12 +1,23 @@
 import { createInterface } from 'readline';
-import { dispose, initialize, isTurnedOn, toggle } from '../index';
+import {
+  dispose,
+  initialize,
+  isTurnedOn,
+  setEventEmitter,
+  toggle,
+} from '../index';
 
-process.on('unhandledRejection', (err, p) => {
+process.once('unhandledRejection', (err, p) => {
   console.error('Rejection error');
   console.error(err);
   console.error('Promise:');
   console.error(p);
-  process.exit(1);
+  dispose().then(() => process.exit(1));
+});
+process.once('uncaughtException', err => {
+  console.error('Unhandled error');
+  console.error(err);
+  dispose().then(() => process.exit(1));
 });
 
 run();
@@ -23,10 +34,8 @@ async function run() {
   cli.prompt(true);
 
   const clear = async () => {
-    dispose().then(() => {
-      cli.write('Disposing and exiting...');
-      return dispose();
-    });
+    cli.write('Disposing and exiting...');
+    return dispose();
   };
   cli.on('SIGINT', clear);
   cli.on('SIGTSTP', clear);
