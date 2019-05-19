@@ -10,13 +10,13 @@
     "i:g:dev:win": "npm i rimraf tslint nodemon tslint-config-airbnb -g -D",
     "r:g:dev:win": "npm r rimraf tslint nodemon tslint-config-airbnb -g -D",
     "build": "rimraf ./dist && ttsc",
-    "start": "node ./dist",
-    "start:b": "npm run build && node ./dist",
-    "start:brk": "node --inspect-brk ./dist",
-    "start:b:brk": "npm run build && node --inspect-brk ./dist",
-    "start:dev": "node --inspect=9229 ./dist",
-    "start:b:dev": "npm run build && node --inspect=9229 ./dist -o",
-    "watch": "nodemon -w src/ -w openapi/src/ -w config/ -e ts,yaml -x \"npm run build\""
+    "start": "node ./dist/tools/switch",
+    "start:b": "npm run build && npm run start",
+    "start:brk": "node --inspect-brk ./dist/tools/switch",
+    "start:b:brk": "npm run build && node --inspect-brk ./dist/tools/switch",
+    "start:dev": "node --inspect=9229 ./dist/tools/switch",
+    "start:b:dev": "npm run build && node --inspect=9229 ./dist/tools/switch -o",
+    "watch": "nodemon -w src/ -w config/ -e ts,yaml -x \"npm run build\""
   },
   "engines": {
     "node": "^10.12"
