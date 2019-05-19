@@ -26,7 +26,7 @@ async function run() {
     cli.write('The pin is initialized! Press enter to switch the led on or off.');
     cli.prompt(true);
     const clear = async () => {
-        cli.write('Disposing and exiting...');
+        cli.write('Disposing and exiting...\n');
         return index_1.dispose().then(() => process.exit(0));
     };
     cli.on('SIGINT', clear);

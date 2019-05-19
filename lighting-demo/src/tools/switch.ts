@@ -34,7 +34,7 @@ async function run() {
   cli.prompt(true);
 
   const clear = async () => {
-    cli.write('Disposing and exiting...');
+    cli.write('Disposing and exiting...\n');
     return dispose().then(() => process.exit(0));
   };
   cli.on('SIGINT', clear);
