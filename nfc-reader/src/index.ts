@@ -35,7 +35,7 @@ export async function initialize(eventEmitter: EventEmitter): Promise<void> {
   // nfcReader = new NFCReader();
   // nfcReader.open();
   // n = new nfc.NFC();
-  device = (await new Freefare().getDeviceList())[0];
+  device = (await new Freefare().listDevices())[0];
   await device.open();
   startListening();
 }
