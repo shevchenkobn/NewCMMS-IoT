@@ -1,12 +1,11 @@
-import * as I2C from 'i2c';
+
+import { NFCReader } from 'libnfc-js';
 import { Nullable } from './@types';
-import { I2C_ADDRESS, PN532 } from 'pn532';
 import { EventEmitter } from 'events';
 import * as config from 'config';
 
-let rfid: Nullable<PN532> = null;
+let nfcReader: Nullable<NFCReader> = null;
 let emitter: EventEmitter;
-let wire: Nullable<I2C> = null;
 
 export async function setEventEmitter(
   eventEmitter: EventEmitter,
@@ -22,41 +21,34 @@ export async function initialize(eventEmitter: EventEmitter): Promise<void> {
     throw new TypeError('eventEmitter is not defined. Cannot initialize.');
   }
   emitter = eventEmitter;
-  if (rfid) {
+  if (nfcReader) {
     emitter.emit('warning', 'The module is already initialized. Initialization skipped.');
     return;
   }
-  // FIXME: see additional parameters
-  wire = new I2C(
-    I2C_ADDRESS,
-    {
-      device: config.get<string>('i2cDevicePath'),
-      debug: process.env.NODE_ENV !== 'production',
-    },
-  );
-  rfid = new PN532(wire, {
-    pollInterval: 500,
-  });
+  nfcReader = new NFCReader();
+  nfcReader.open();
+  startListening();
 }
 
 export async function dispose(): Promise<void> {
-  if (!rfid) {
+  if (!nfcReader) {
     emitter.emit('warning', 'The module is not initialized.');
     return;
   }
-  wire.close();
-  rfid = null;
-  wire = null;
-  (emitter as any) = null;
+  nfcReader.close();
+  nfcReader = null;
 }
 
 function startListening() {
-  if (!rfid) {
+  if (!nfcReader) {
     throw new TypeError('The module is not iniitalized');
   }
-  rfid.on('ready', () => {
-    rfid.on('tag', (tag: any) => {
-      console.log(tag);
+  nfcReader.on('card', (card: any) => {
+    emitter.emit('data', card);
+    nfcReader.release().then((...args: any[]) => {
+      console.log(args);
+      nfcReader.poll();
     });
   });
+  nfcReader.poll();
 }

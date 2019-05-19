@@ -19,6 +19,9 @@ run();
 async function run() {
   const eventEmitter = new EventEmitter();
   eventEmitter.on('error', err => process.emit('uncaughtException', err));
+  eventEmitter.on('data', (data: string) => {
+    console.info(`Read data from NFC: """${data}""".\n\n`);
+  });
   await initialize(eventEmitter);
 
   console.info('NFC module is initialized. Scanning for devices...');
