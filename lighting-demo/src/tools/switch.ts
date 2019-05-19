@@ -9,6 +9,8 @@ process.on('unhandledRejection', (err, p) => {
   process.exit(1);
 });
 
+run();
+
 async function run() {
 
   await initialize(false);
