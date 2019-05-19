@@ -17,6 +17,7 @@ process.once('uncaughtException', err => {
 run();
 async function run() {
     const eventEmitter = new events_1.EventEmitter();
+    eventEmitter.on('error', err => process.emit('uncaughtException', err));
     await __1.initialize(eventEmitter);
     console.info('NFC module is initialized. Scanning for devices...');
     const clear = async (signal) => {

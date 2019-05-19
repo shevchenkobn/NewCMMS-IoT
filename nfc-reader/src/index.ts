@@ -54,7 +54,9 @@ function startListening() {
   if (!rfid) {
     throw new TypeError('The module is not iniitalized');
   }
-  rfid.on('tag', (tag: any) => {
-    console.log(tag);
+  rfid.on('ready', () => {
+    rfid.on('tag', (tag: any) => {
+      console.log(tag);
+    });
   });
 }

@@ -1,3 +1,5 @@
+Use Node 9 or lower.
+
 In case i2c device is not detected do:
 - Add the line (or uncomment) `dtparam=i2c_arm=on` to the file `/boot/config.txt`.
 - Add the line `i2c-dev` to `/etc/modules`.

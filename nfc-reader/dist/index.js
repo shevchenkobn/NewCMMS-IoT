@@ -47,8 +47,10 @@ function startListening() {
     if (!rfid) {
         throw new TypeError('The module is not iniitalized');
     }
-    rfid.on('tag', (tag) => {
-        console.log(tag);
+    rfid.on('ready', () => {
+        rfid.on('tag', (tag) => {
+            console.log(tag);
+        });
     });
 }
 //# sourceMappingURL=index.js.map
