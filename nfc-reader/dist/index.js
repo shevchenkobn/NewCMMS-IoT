@@ -29,7 +29,7 @@ async function dispose() {
         emitter.emit('warning', 'The module is not initialized.');
         return;
     }
-    nfcReader.close();
+    nfcReader._nfc.close();
     nfcReader = null;
 }
 exports.dispose = dispose;
@@ -39,9 +39,13 @@ function startListening() {
     }
     nfcReader.on('card', (card) => {
         emitter.emit('data', card);
-        nfcReader.release().then((...args) => {
-            console.log(args);
-            nfcReader.poll();
+        console.info(card);
+        nfcReader.transceive(Buffer.from([0])).then((...results) => {
+            console.info(results);
+            nfcReader.release().then((...args) => {
+                console.info(args);
+                nfcReader.poll();
+            });
         });
     });
     nfcReader.poll();
