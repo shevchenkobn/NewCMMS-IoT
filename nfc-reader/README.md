@@ -4,3 +4,5 @@ In case i2c device is not detected do:
 - _(didn't use)_ Remove the line `i2c-bcm2708` from `/etc/modules`.
 
 _Source at https://raspberrypi.stackexchange.com/a/56028_
+
+Additional info: https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md

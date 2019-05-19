@@ -19,7 +19,7 @@
     "watch": "nodemon -w src/ -w config/ -e ts,yaml -x \"npm run build\""
   },
   "engines": {
-    "node": "^10.12"
+    "node": "^9"
   },
   "author": "Bogdan Shevchenko",
   "license": "ISC",
