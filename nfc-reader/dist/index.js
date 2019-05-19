@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const libnfc_js_1 = require("libnfc-js");
-let nfcReader = null;
+const nfc_1 = require("nfc");
+// let nfcReader: Nullable<NFCReader> = null;
+let n;
 let emitter;
 async function setEventEmitter(eventEmitter) {
     if (!eventEmitter) {
@@ -15,39 +16,51 @@ async function initialize(eventEmitter) {
         throw new TypeError('eventEmitter is not defined. Cannot initialize.');
     }
     emitter = eventEmitter;
-    if (nfcReader) {
+    // if (nfcReader) {
+    if (n) {
         emitter.emit('warning', 'The module is already initialized. Initialization skipped.');
         return;
     }
-    nfcReader = new libnfc_js_1.NFCReader();
-    nfcReader.open();
+    // nfcReader = new NFCReader();
+    // nfcReader.open();
+    n = new nfc_1.nfc.NFC();
     startListening();
 }
 exports.initialize = initialize;
 async function dispose() {
-    if (!nfcReader) {
+    // if (!nfcReader) {
+    if (!n) {
         emitter.emit('warning', 'The module is not initialized.');
         return;
     }
-    nfcReader._nfc.close();
-    nfcReader = null;
+    // nfcReader._nfc.close();
+    // nfcReader = null;
+    n.stop();
+    n = null;
 }
 exports.dispose = dispose;
 function startListening() {
-    if (!nfcReader) {
+    // if (!nfcReader) {
+    if (!n) {
         throw new TypeError('The module is not iniitalized');
     }
-    nfcReader.on('card', (card) => {
-        emitter.emit('data', card);
-        console.info(card);
-        nfcReader.transceive(Buffer.from([0])).then((...results) => {
-            console.info(results);
-            nfcReader.release().then((...args) => {
-                console.info(args);
-                nfcReader.poll();
-            });
-        });
-    });
-    nfcReader.poll();
+    // nfcReader.on('card', (card: any) => {
+    //   emitter.emit('data', card);
+    //   console.info(card);
+    //   // console.info(results);
+    //   nfcReader.release().then((...args: any[]) => {
+    //     console.info(args);
+    //     nfcReader.poll();
+    //   });
+    //   // nfcReader.transceive(Buffer.from([0])).then((...results: any[]) => {
+    //   // });
+    // });
+    // nfcReader.poll();
+    n.on('read', (tag) => {
+        console.info(tag);
+        emitter.emit('data', tag.data);
+    }).on('error', (err) => {
+        emitter.emit(err);
+    }).start();
 }
 //# sourceMappingURL=index.js.map
