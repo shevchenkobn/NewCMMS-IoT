@@ -27,7 +27,7 @@ async function run() {
     cli.prompt(true);
     const clear = async () => {
         cli.write('Disposing and exiting...');
-        return index_1.dispose();
+        return index_1.dispose().then(() => process.exit(0));
     };
     cli.on('SIGINT', clear);
     cli.on('SIGTSTP', clear);

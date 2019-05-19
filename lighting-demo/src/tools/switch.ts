@@ -35,7 +35,7 @@ async function run() {
 
   const clear = async () => {
     cli.write('Disposing and exiting...');
-    return dispose();
+    return dispose().then(() => process.exit(0));
   };
   cli.on('SIGINT', clear);
   cli.on('SIGTSTP', clear);
