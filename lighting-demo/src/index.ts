@@ -5,10 +5,10 @@ import { EventEmitter } from 'events';
 
 const GpioEnum: { HIGH: number, LOW: number } = Gpio as any;
 
-let ledPin: Nullable<Gpio>;
+let ledPin: Nullable<Gpio> = null;
 let turnedOnState = false;
 
-let eventEmitter: Nullable<EventEmitter>;
+let eventEmitter: Nullable<EventEmitter> = null;
 
 export function setEventEmitter(emitter: Nullable<EventEmitter>) {
   eventEmitter = emitter;
