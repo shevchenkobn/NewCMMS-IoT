@@ -28,10 +28,10 @@ async function run() {
     };
     cli.on('SIGINT', clear);
     cli.on('SIGTSTP', clear);
-    for await (const line of cli) {
+    cli.on('line', async (input) => {
         await index_1.toggle();
         cli.write('LED is turned ' + (await index_1.isTurnedOn() ? 'on' : 'off'));
         cli.prompt();
-    }
+    });
 }
 //# sourceMappingURL=switch.js.map

@@ -12,7 +12,6 @@ process.on('unhandledRejection', (err, p) => {
 run();
 
 async function run() {
-
   await initialize(false);
   const cli = createInterface({
     input: process.stdin,
@@ -32,9 +31,9 @@ async function run() {
   cli.on('SIGINT', clear);
   cli.on('SIGTSTP', clear);
 
-  for await (const line of cli) {
+  cli.on('line', async input => {
     await toggle();
     cli.write('LED is turned ' + (await isTurnedOn() ? 'on' : 'off'));
     cli.prompt();
-  }
+  });
 }
