@@ -12,10 +12,10 @@
     "build": "rimraf ./dist && ttsc",
     "start": "node ./dist/tools/switch",
     "start:b": "npm run build && npm run start",
-    "start:brk": "node --inspect-brk ./dist/tools/switch",
+    "start:brk": "node --inspect-brk=0.0.0.0 ./dist/tools/switch",
     "start:b:brk": "npm run build && node --inspect-brk ./dist/tools/switch",
-    "start:dev": "node --inspect=9229 ./dist/tools/switch",
-    "start:b:dev": "npm run build && node --inspect=9229 ./dist/tools/switch -o",
+    "start:dev": "node --inspect=0.0.0.0 ./dist/tools/switch",
+    "start:b:dev": "npm run build && node --inspect=0.0.0.0 ./dist/tools/switch -o",
     "watch": "nodemon -w src/ -w config/ -e ts,yaml -x \"npm run build\""
   },
   "engines": {
