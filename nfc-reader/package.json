@@ -28,9 +28,9 @@
     "bluebird": "^3.5.4",
     "bluebird-global": "^1.0.1",
     "config": "^3.1.0",
-    "i2c": "^0.2.3",
+    "freefare": "^0.1.5",
     "js-yaml": "^3.13.1",
-    "pn532": "^1.0.0",
+    "libnfc-js": "^0.1.0",
     "ts-optchain": "^0.1.7",
     "tslib": "^1.9.3"
   },
