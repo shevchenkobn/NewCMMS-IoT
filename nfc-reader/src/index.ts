@@ -88,30 +88,33 @@ function startListening() {
   // }).start();
   listener = null;
   const listen = async () => {
-    console.info('Getting tags');
-    const tags = await device.listTags();
-    console.info('Tags: ', tags);
-    await device.abort();
-    for (const tag of tags) {
-      if (tag.read) {
-        console.info('Readable', tag);
-        console.info('Opening tag', tag);
-        await tag.open();
-        const buffers = [];
-        for (let i = 0; i < 64; i += 1) {
-          console.info('Reading at', tag, i);
-          buffers.push(await tag.read(i));
+    try {
+      console.info('Getting tags');
+      const tags = await device.listTags();
+      console.info('Tags: ', tags);
+      for (const tag of tags) {
+        if (tag.read) {
+          console.info('Readable', tag);
+          console.info('Opening tag', tag);
+          await tag.open();
+          const buffers = [];
+          for (let i = 0; i < 64; i += 1) {
+            console.info('Reading at', tag, i);
+            buffers.push(await tag.read(i));
+          }
+          console.info('closing', tag);
+          await tag.close();
+          const data = Buffer.concat(buffers);
+          emitter.emit('data', data);
+          // await new Promise(async (resolve, reject) => {
+          //   await tag.open();
+          //   return Buffer.concat(buffers);
+          // }).then(data => emitter.emit('data', data))
+          //   .catch(err => emitter.emit('error', err));
         }
-        console.info('closing', tag);
-        await tag.close();
-        const data = Buffer.concat(buffers);
-        emitter.emit('data', data);
-        // await new Promise(async (resolve, reject) => {
-        //   await tag.open();
-        //   return Buffer.concat(buffers);
-        // }).then(data => emitter.emit('data', data))
-        //   .catch(err => emitter.emit('error', err));
       }
+    } catch (err) {
+      emitter.emit('error', err);
     }
   };
   const wrapper = (): any => listen().catch(err => emitter.emit('error', err)).then(wrapper);
