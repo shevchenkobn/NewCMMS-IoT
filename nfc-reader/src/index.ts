@@ -1,5 +1,5 @@
 
-import { decodeMessage } from 'ndef';
+import { decodeMessage, text } from 'ndef';
 import { nfc } from 'nfc';
 // import { decodeMessage, text } from 'ndef';
 // import { NFCReader } from 'libnfc-js';
@@ -93,7 +93,7 @@ function startListening() {
         ? tag.data.slice(tag.offset)
         : tag.data;
       const tagData = nfc.parse(buffer);
-      emitter.emit('data', decodeMessage(tagData[0].ndef[0].payload));
+      emitter.emit('data', text.decodeMessage(tagData[0].ndef[0].payload));
     } catch (err) {
       emitter.emit('error', err);
       if (offsetPresent) {

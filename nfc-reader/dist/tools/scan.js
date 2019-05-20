@@ -19,7 +19,7 @@ async function run() {
     const eventEmitter = new events_1.EventEmitter();
     eventEmitter.on('error', err => console.error('NFC error: ', err));
     eventEmitter.on('data', (data) => {
-        console.info(`Read data from NFC: """${JSON.stringify(data)}""".\n\n`);
+        console.info(`Read data from NFC: """${data}""".\n\n`);
     });
     eventEmitter.on('no-data', (tag) => {
         console.info(`Tag without data found: """${JSON.stringify(tag)}""".\n\n`);
