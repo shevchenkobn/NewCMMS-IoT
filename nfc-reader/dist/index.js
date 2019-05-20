@@ -30,7 +30,9 @@ async function initialize(eventEmitter) {
     // nfcReader.open();
     // n = new nfc.NFC();
     device = (await new Freefare().listDevices())[0];
+    console.info('Found a device:', device);
     await device.open();
+    console.info('opened it');
     startListening();
 }
 exports.initialize = initialize;
@@ -75,14 +77,22 @@ function startListening() {
     //   emitter.emit(err);
     // }).start();
     const listener = async () => {
+        console.info('Getting tags');
         const tags = await device.listTags();
+        console.info('Tags: ', tags);
         for (const tag of tags) {
             if (tag.read) {
+                console.info('Readable', tag);
                 new Promise(async (resolve, reject) => {
+                    console.info('Opening tag', tag);
+                    await tag.open();
                     const buffers = [];
                     for (let i = 0; i < 64; i += 1) {
+                        console.info('Reading at', tag, i);
                         buffers.push(await tag.read(i));
                     }
+                    console.info('closing', tag);
+                    await tag.close();
                     return Buffer.concat(buffers);
                 }).then(data => emitter.emit('data', data))
                     .catch(err => emitter.emit('error', err));
