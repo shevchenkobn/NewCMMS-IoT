@@ -31,6 +31,7 @@ async function run() {
     });
     eventEmitter.on('uninit', () => {
         console.info('The NFC module was uninitialized due to error');
+        process.exit(1);
     });
     await __1.initialize(eventEmitter);
     console.info('NFC module is initialized. Scanning for devices...');
