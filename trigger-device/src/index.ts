@@ -73,9 +73,17 @@ import(
           console.warn('Unknown topic:', topic);
       }
     });
+    client.subscribe(publishResultTopic, {
+      qos: MqttQoS.EXACTLY_ONCE,
+      nl: true,
+      rap: true,
+      rh: true,
+    } as any).catch(err => {
+      console.error('Failed to subscribe to result. ', err);
+    });
 
     emitter.on('data', data => {
-      console.log('Got data to send:', data);
+      console.log(`Got data to send """${data}"""\n\n`);
       requestInProcess = data;
       publish(client, data);
     });
@@ -88,17 +96,17 @@ function publish(client: AsyncMqttClient, data: string) {
     retain: true,
     dup: false,
   }).catch(err => {
-    console.error(`Error while publishing """${requestInProcess}""". Resending...`, err);
+    console.error(`Error while publishing """${requestInProcess}""". Resending...`, err, '\n\n');
     publish(client, data);
   }).then(() => {
-    console.info(`The request """${requestInProcess}""" is sent.`);
+    console.info(`The request """${requestInProcess}""" is sent.\n\n`);
   });
 }
 
 function notifyAboutDataError(data: string, result: string) {
-  console.info(`Bad data """${data}"""\nReason: ${result}`);
+  console.info(`Bad data """${data}"""\nReason: ${result}\n\n`);
 }
 
 function notifyAboutDataOK(data: string, result: string) {
-  console.info(`Request """${data}"""\nResult: ${result}`);
+  console.info(`Request """${data}"""\nResult: ${result}]\n\n`);
 }

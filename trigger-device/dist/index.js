@@ -58,8 +58,16 @@ Promise.resolve().then(() => require(appRootPath.resolve(config.get('triggerModu
                     console.warn('Unknown topic:', topic);
             }
         });
+        client.subscribe(publishResultTopic, {
+            qos: mqtt_1.MqttQoS.EXACTLY_ONCE,
+            nl: true,
+            rap: true,
+            rh: true,
+        }).catch(err => {
+            console.error('Failed to subscribe to result. ', err);
+        });
         emitter.on('data', data => {
-            console.log('Got data to send:', data);
+            console.log(`Got data to send """${data}"""\n\n`);
             requestInProcess = data;
             publish(client, data);
         });
@@ -71,16 +79,16 @@ function publish(client, data) {
         retain: true,
         dup: false,
     }).catch(err => {
-        console.error(`Error while publishing """${requestInProcess}""". Resending...`, err);
+        console.error(`Error while publishing """${requestInProcess}""". Resending...`, err, '\n\n');
         publish(client, data);
     }).then(() => {
-        console.info(`The request """${requestInProcess}""" is sent.`);
+        console.info(`The request """${requestInProcess}""" is sent.\n\n`);
     });
 }
 function notifyAboutDataError(data, result) {
-    console.info(`Bad data """${data}"""\nReason: ${result}`);
+    console.info(`Bad data """${data}"""\nReason: ${result}\n\n`);
 }
 function notifyAboutDataOK(data, result) {
-    console.info(`Request """${data}"""\nResult: ${result}`);
+    console.info(`Request """${data}"""\nResult: ${result}]\n\n`);
 }
 //# sourceMappingURL=index.js.map
