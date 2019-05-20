@@ -55,12 +55,15 @@ import(
     client.on('message', (topic, payload, packet) => {
       switch (topic) {
         case publishResultTopic: {
-          const result = topic.slice(2);
-          const isSuccessful = !Boolean(Number.parseInt(topic[0], 10));
           if (!requestInProcess) {
             console.error('Unknown state because no data in progress found');
             break;
           }
+          const strPayload = Buffer.isBuffer(payload)
+            ? (payload as Buffer).toString('utf8')
+            : payload;
+          const result = strPayload.slice(2);
+          const isSuccessful = !Boolean(Number.parseInt(strPayload[0], 10));
           if (isSuccessful) {
             notifyAboutDataOK(requestInProcess, result);
           } else {

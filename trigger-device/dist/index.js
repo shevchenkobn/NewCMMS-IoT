@@ -39,12 +39,15 @@ Promise.resolve().then(() => require(appRootPath.resolve(config.get('triggerModu
             switch (topic) {
                 case publishResultTopic:
                     {
-                        const result = topic.slice(2);
-                        const isSuccessful = !Boolean(Number.parseInt(topic[0], 10));
                         if (!requestInProcess) {
                             console.error('Unknown state because no data in progress found');
                             break;
                         }
+                        const strPayload = Buffer.isBuffer(payload)
+                            ? payload.toString('utf8')
+                            : payload;
+                        const result = strPayload.slice(2);
+                        const isSuccessful = !Boolean(Number.parseInt(strPayload[0], 10));
                         if (isSuccessful) {
                             notifyAboutDataOK(requestInProcess, result);
                         }
