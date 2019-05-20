@@ -68,7 +68,7 @@ const errorHandler = (err, p) => {
     execHandlers().catch(err => {
         console.error('The process is not shut down gracefully! Error while error handling.');
         console.error(err);
-    }).finally(() => {
+    }).then(() => {
         process.on('exit', () => {
             console.warn('WARNING! Non-one exit code!');
             process.kill(process.pid);
