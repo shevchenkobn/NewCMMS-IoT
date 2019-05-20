@@ -84,7 +84,7 @@ function startListening() {
                 ? tag.data.slice(tag.offset)
                 : tag.data;
             const tagData = nfc_1.nfc.parse(buffer);
-            emitter.emit('data', ndef_1.text.decodeMessage(tagData[0].ndef[0].payload));
+            emitter.emit('data', ndef_1.text.decodePayload(tagData[0].ndef[0].payload));
         }
         catch (err) {
             emitter.emit('error', err);
