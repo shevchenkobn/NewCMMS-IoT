@@ -80,7 +80,7 @@ import(
       qos: MqttQoS.EXACTLY_ONCE,
       nl: true,
       rap: true,
-      rh: true,
+      rh: false,
     } as any).catch(err => {
       console.error('Failed to subscribe to result. ', err);
     });

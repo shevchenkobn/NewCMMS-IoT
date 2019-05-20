@@ -65,7 +65,7 @@ Promise.resolve().then(() => require(appRootPath.resolve(config.get('triggerModu
             qos: mqtt_1.MqttQoS.EXACTLY_ONCE,
             nl: true,
             rap: true,
-            rh: true,
+            rh: false,
         }).catch(err => {
             console.error('Failed to subscribe to result. ', err);
         });
