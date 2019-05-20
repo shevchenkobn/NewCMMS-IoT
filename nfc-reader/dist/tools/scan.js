@@ -29,6 +29,9 @@ async function run() {
     eventEmitter.on('raw-data', (buffer) => {
         console.info(`Failed to parse data: """${buffer.toString('utf8')}""".\n\n`);
     });
+    eventEmitter.on('uninit', () => {
+        console.info('The NFC module was uninitialized due to error');
+    });
     await __1.initialize(eventEmitter);
     console.info('NFC module is initialized. Scanning for devices...');
     const clear = async (signal) => {
