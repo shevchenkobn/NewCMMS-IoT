@@ -73,7 +73,6 @@ function startListening() {
     // });
     // nfcReader.poll();
     n.on('read', (tag) => {
-        console.info(tag);
         if (!tag.data) {
             emitter.emit('no-data', tag);
             return;

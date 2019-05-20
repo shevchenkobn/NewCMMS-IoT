@@ -17,9 +17,15 @@ process.once('uncaughtException', err => {
 run();
 async function run() {
     const eventEmitter = new events_1.EventEmitter();
-    eventEmitter.on('error', err => console.error(err));
+    eventEmitter.on('error', err => console.error('NFC error: ', err));
     eventEmitter.on('data', (data) => {
-        console.info(`Read data from NFC: """${data}""".\n\n`);
+        console.info(`Read data from NFC: """${JSON.stringify(data)}""".\n\n`);
+    });
+    eventEmitter.on('no-data', (tag) => {
+        console.info(`Tag without data found: """${JSON.stringify(tag)}""".\n\n`);
+    });
+    eventEmitter.on('raw-data', (buffer) => {
+        console.info(`Failed to parse data: """${JSON.stringify(buffer)}""".\n\n`);
     });
     await __1.initialize(eventEmitter);
     console.info('NFC module is initialized. Scanning for devices...');

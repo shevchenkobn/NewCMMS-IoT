@@ -18,9 +18,15 @@ run();
 
 async function run() {
   const eventEmitter = new EventEmitter();
-  eventEmitter.on('error', err => console.error(err));
-  eventEmitter.on('data', (data: string) => {
-    console.info(`Read data from NFC: """${data}""".\n\n`);
+  eventEmitter.on('error', err => console.error('NFC error: ', err));
+  eventEmitter.on('data', (data: any) => {
+    console.info(`Read data from NFC: """${JSON.stringify(data)}""".\n\n`);
+  });
+  eventEmitter.on('no-data', (tag: any) => {
+    console.info(`Tag without data found: """${JSON.stringify(tag)}""".\n\n`);
+  });
+  eventEmitter.on('raw-data', (buffer: Buffer) => {
+    console.info(`Failed to parse data: """${JSON.stringify(buffer)}""".\n\n`);
   });
   await initialize(eventEmitter);
 
