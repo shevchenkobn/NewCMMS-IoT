@@ -11,6 +11,7 @@ import * as config from 'config';
 let device: Nullable<any>;
 let interval: NodeJS.Timeout;
 let emitter: EventEmitter;
+let scanning: boolean = false;
 
 export async function setEventEmitter(
   eventEmitter: EventEmitter,
@@ -84,7 +85,10 @@ function startListening() {
   // }).start();
   const listener = async () => {
     console.info('Getting tags');
-    await device.abort();
+    if (scanning) {
+      await device.abort();
+    }
+    scanning = true;
     const tags = await device.listTags();
     console.info('Tags: ', tags);
     for (const tag of tags) {
@@ -104,6 +108,7 @@ function startListening() {
         }).then(data => emitter.emit('data', data))
           .catch(err => emitter.emit('error', err));
       }
+      scanning = false;
     }
   };
   interval = setInterval(listener, 2000);

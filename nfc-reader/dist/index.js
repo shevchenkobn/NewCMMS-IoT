@@ -8,6 +8,7 @@ const Freefare = require("freefare");
 let device;
 let interval;
 let emitter;
+let scanning = false;
 async function setEventEmitter(eventEmitter) {
     if (!eventEmitter) {
         throw new TypeError('eventEmitter is not defined');
@@ -78,7 +79,10 @@ function startListening() {
     // }).start();
     const listener = async () => {
         console.info('Getting tags');
-        await device.abort();
+        if (scanning) {
+            await device.abort();
+        }
+        scanning = true;
         const tags = await device.listTags();
         console.info('Tags: ', tags);
         for (const tag of tags) {
@@ -98,6 +102,7 @@ function startListening() {
                 }).then(data => emitter.emit('data', data))
                     .catch(err => emitter.emit('error', err));
             }
+            scanning = false;
         }
     };
     interval = setInterval(listener, 2000);
