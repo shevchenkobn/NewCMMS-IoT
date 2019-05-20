@@ -92,6 +92,6 @@ function notifyAboutDataError(data, result) {
     console.info(`Bad data """${data}"""\nReason: ${result}\n\n`);
 }
 function notifyAboutDataOK(data, result) {
-    console.info(`Request """${data}"""\nResult: ${result}]\n\n`);
+    console.info(`Request """${data}"""\nResult: ${result}\n\n`);
 }
 //# sourceMappingURL=index.js.map

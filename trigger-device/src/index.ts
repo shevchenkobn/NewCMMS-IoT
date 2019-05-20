@@ -111,5 +111,5 @@ function notifyAboutDataError(data: string, result: string) {
 }
 
 function notifyAboutDataOK(data: string, result: string) {
-  console.info(`Request """${data}"""\nResult: ${result}]\n\n`);
+  console.info(`Request """${data}"""\nResult: ${result}\n\n`);
 }
