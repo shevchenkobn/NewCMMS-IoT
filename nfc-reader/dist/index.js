@@ -85,6 +85,7 @@ function startListening() {
         console.info('Getting tags');
         const tags = await device.listTags();
         console.info('Tags: ', tags);
+        await device.abort();
         for (const tag of tags) {
             if (tag.read) {
                 console.info('Readable', tag);
