@@ -1,0 +1,11 @@
+physicalAddress: aabbccddeeff
+actorModulePath: ../lighting-demo
+mqttBroker:
+  protocol: mqtt
+  host: 192.168.0.104
+  port: 1883 # to override set null
+  #username: yourUser # to override set null
+  #password: yourPass # to override set null
+
+# Lighting-demo config
+bcmPinNum: 23
