@@ -88,7 +88,7 @@ function startListening() {
         for (const tag of tags) {
             if (tag.read) {
                 console.info('Readable', tag);
-                new Promise(async (resolve, reject) => {
+                await new Promise(async (resolve, reject) => {
                     console.info('Opening tag', tag);
                     await tag.open();
                     const buffers = [];
