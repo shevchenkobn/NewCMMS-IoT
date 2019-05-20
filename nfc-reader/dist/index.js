@@ -78,6 +78,7 @@ function startListening() {
     // }).start();
     const listener = async () => {
         console.info('Getting tags');
+        await device.abort();
         const tags = await device.listTags();
         console.info('Tags: ', tags);
         for (const tag of tags) {
