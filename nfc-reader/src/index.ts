@@ -105,5 +105,5 @@ function startListening() {
       }
     }
   };
-  interval = setInterval(listener, 500);
+  interval = setInterval(listener, 2000);
 }
