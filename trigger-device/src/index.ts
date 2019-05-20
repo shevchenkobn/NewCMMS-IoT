@@ -45,7 +45,11 @@ import(
   });
 
   await triggerModule.initialize(emitter);
-  bindOnExitHandler(() => triggerModule.dispose());
+  console.info('Trigger module is initialized');
+  bindOnExitHandler(() => {
+    console.info('Disposing trigger module...');
+    return triggerModule.dispose();
+  });
 
   const client = getMqttClient(() => {
     client.on('message', (topic, payload, packet) => {

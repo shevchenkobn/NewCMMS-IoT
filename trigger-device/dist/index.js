@@ -29,7 +29,11 @@ Promise.resolve().then(() => require(appRootPath.resolve(config.get('triggerModu
         });
     });
     await triggerModule.initialize(emitter);
-    exit_handler_1.bindOnExitHandler(() => triggerModule.dispose());
+    console.info('Trigger module is initialized');
+    exit_handler_1.bindOnExitHandler(() => {
+        console.info('Disposing trigger module...');
+        return triggerModule.dispose();
+    });
     const client = mqtt_1.getMqttClient(() => {
         client.on('message', (topic, payload, packet) => {
             switch (topic) {
