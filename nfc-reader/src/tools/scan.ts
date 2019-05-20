@@ -26,7 +26,7 @@ async function run() {
     console.info(`Tag without data found: """${JSON.stringify(tag)}""".\n\n`);
   });
   eventEmitter.on('raw-data', (buffer: Buffer) => {
-    console.info(`Failed to parse data: """${JSON.stringify(buffer)}""".\n\n`);
+    console.info(`Failed to parse data: """${buffer.toString('utf8')}""".\n\n`);
   });
   await initialize(eventEmitter);
 

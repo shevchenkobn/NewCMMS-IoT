@@ -25,7 +25,7 @@ async function run() {
         console.info(`Tag without data found: """${JSON.stringify(tag)}""".\n\n`);
     });
     eventEmitter.on('raw-data', (buffer) => {
-        console.info(`Failed to parse data: """${JSON.stringify(buffer)}""".\n\n`);
+        console.info(`Failed to parse data: """${buffer.toString('utf8')}""".\n\n`);
     });
     await __1.initialize(eventEmitter);
     console.info('NFC module is initialized. Scanning for devices...');
