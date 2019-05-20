@@ -45,8 +45,10 @@ async function dispose() {
     }
     // nfcReader._nfc.close();
     // nfcReader = null;
-    n.stop();
+    const nfc = n;
     n = null;
+    nfc.stop();
+    nfc.stop();
     // device.close();
     // // clearInterval(interval);
     // device = null;
@@ -103,7 +105,9 @@ function startListening() {
             }
         }
     }).on('stopped', (...args) => {
-        console.log('stopped', args);
+        dispose()
+            .then(() => emitter.emit('uninit'))
+            .catch(err => emitter.emit('error', err));
     }).on('error', (err) => {
         emitter.emit(err);
     }).start();

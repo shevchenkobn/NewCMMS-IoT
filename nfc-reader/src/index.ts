@@ -54,8 +54,10 @@ export async function dispose(): Promise<void> {
   }
   // nfcReader._nfc.close();
   // nfcReader = null;
-  n.stop();
+  const nfc = n;
   n = null;
+  nfc.stop();
+  nfc.stop();
   // device.close();
   // // clearInterval(interval);
   // device = null;
@@ -110,7 +112,9 @@ function startListening() {
       }
     }
   }).on('stopped', (...args: any[]) => {
-    console.log('stopped', args);
+    dispose()
+      .then(() => emitter.emit('uninit'))
+      .catch(err => emitter.emit('error', err));
   }).on('error', (err: any) => {
     emitter.emit(err);
   }).start();
