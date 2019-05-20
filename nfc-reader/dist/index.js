@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ndef_1 = require("ndef");
 const nfc_1 = require("nfc");
 // let nfcReader: Nullable<NFCReader> = null;
 let n;
@@ -82,7 +83,8 @@ function startListening() {
             const buffer = offsetPresent
                 ? tag.data.slice(tag.offset)
                 : tag.data;
-            emitter.emit('data', nfc_1.nfc.parse(buffer));
+            const tagData = nfc_1.nfc.parse(buffer);
+            emitter.emit('data', ndef_1.decodeMessage(tagData[0].ndef.payload));
         }
         catch (err) {
             emitter.emit('error', err);
