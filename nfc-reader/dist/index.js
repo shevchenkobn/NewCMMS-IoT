@@ -6,9 +6,8 @@ const Freefare = require("freefare");
 // let nfcReader: Nullable<NFCReader> = null;
 // let n: Nullable<nfc.NFC>;
 let device;
-let interval;
+let listener;
 let emitter;
-let scanning = false;
 async function setEventEmitter(eventEmitter) {
     if (!eventEmitter) {
         throw new TypeError('eventEmitter is not defined');
@@ -49,8 +48,12 @@ async function dispose() {
     // n.stop();
     // n = null;
     device.close();
-    clearInterval(interval);
+    // clearInterval(interval);
     device = null;
+    if (listener) {
+        listener.catch(err => { });
+    }
+    listener = null;
 }
 exports.dispose = dispose;
 function startListening() {
@@ -77,12 +80,9 @@ function startListening() {
     // }).on('error', (err: any) => {
     //   emitter.emit(err);
     // }).start();
-    const listener = async () => {
+    listener = null;
+    const listen = async () => {
         console.info('Getting tags');
-        if (scanning) {
-            await device.abort();
-        }
-        scanning = true;
         const tags = await device.listTags();
         console.info('Tags: ', tags);
         for (const tag of tags) {
@@ -102,9 +102,8 @@ function startListening() {
                 }).then(data => emitter.emit('data', data))
                     .catch(err => emitter.emit('error', err));
             }
-            scanning = false;
         }
     };
-    interval = setInterval(listener, 2000);
+    listen().catch(err => emitter.emit('error', err)).then(listen);
 }
 //# sourceMappingURL=index.js.map
