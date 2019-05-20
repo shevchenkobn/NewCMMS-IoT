@@ -7,6 +7,7 @@ import { nfc } from 'nfc';
 import { Nullable } from './@types';
 import { EventEmitter } from 'events';
 import * as config from 'config';
+import { getProtectedData } from './utils';
 
 // let nfcReader: Nullable<NFCReader> = null;
 let n: Nullable<nfc.NFC>;
@@ -83,6 +84,11 @@ function startListening() {
   // });
   // nfcReader.poll();
   n.on('read', (tag: any) => {
+    const protectedData = getProtectedData(tag);
+    if (protectedData) {
+      emitter.emit('data', protectedData);
+      return;
+    }
     if (!tag.data) {
       emitter.emit('no-data', tag);
       return;
@@ -92,7 +98,8 @@ function startListening() {
       const buffer: Buffer = offsetPresent
         ? tag.data.slice(tag.offset)
         : tag.data;
-      const tagData = decodeMessage(buffer);
+      const tagData = nfc.parse(buffer);
+      console.log(tagData);
       emitter.emit('data', text.decodePayload(tagData[0].payload));
     } catch (err) {
       emitter.emit('error', err);

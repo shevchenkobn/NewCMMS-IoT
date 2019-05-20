@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ndef_1 = require("ndef");
 const nfc_1 = require("nfc");
+const utils_1 = require("./utils");
 // let nfcReader: Nullable<NFCReader> = null;
 let n;
 // let device: Nullable<any>;
@@ -74,6 +75,11 @@ function startListening() {
     // });
     // nfcReader.poll();
     n.on('read', (tag) => {
+        const protectedData = utils_1.getProtectedData(tag);
+        if (protectedData) {
+            emitter.emit('data', protectedData);
+            return;
+        }
         if (!tag.data) {
             emitter.emit('no-data', tag);
             return;
@@ -83,7 +89,8 @@ function startListening() {
             const buffer = offsetPresent
                 ? tag.data.slice(tag.offset)
                 : tag.data;
-            const tagData = ndef_1.decodeMessage(buffer);
+            const tagData = nfc_1.nfc.parse(buffer);
+            console.log(tagData);
             emitter.emit('data', ndef_1.text.decodePayload(tagData[0].payload));
         }
         catch (err) {
