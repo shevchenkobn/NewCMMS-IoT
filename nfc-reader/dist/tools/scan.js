@@ -17,9 +17,11 @@ process.once('uncaughtException', err => {
 run();
 async function run() {
     const eventEmitter = new events_1.EventEmitter();
+    let counter = 0;
     eventEmitter.on('error', err => console.error('NFC error: ', err));
     eventEmitter.on('data', (data) => {
-        console.info(`Read data from NFC: """${data}""".\n\n`);
+        counter += 1;
+        console.info(`Read data from NFC: """${data}""".\nSuccessful reads: ${counter}\n\n`);
     });
     eventEmitter.on('no-data', (tag) => {
         console.info(`Tag without data found: """${JSON.stringify(tag)}""".\n\n`);
