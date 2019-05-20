@@ -18,7 +18,7 @@ run();
 
 async function run() {
   const eventEmitter = new EventEmitter();
-  eventEmitter.on('error', err => process.emit('uncaughtException', err));
+  eventEmitter.on('error', err => console.error(err));
   eventEmitter.on('data', (data: string) => {
     console.info(`Read data from NFC: """${data}""".\n\n`);
   });
