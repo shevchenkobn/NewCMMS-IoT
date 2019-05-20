@@ -67,7 +67,7 @@ import(
 });
 
 function subscribe(client: AsyncMqttClient) {
-  client.subscribe(publishTopicForResult, {
+  client.subscribe(subscribeTopic, {
     qos: MqttQoS.EXACTLY_ONCE,
     nl: true,
     rap: true,
@@ -80,7 +80,7 @@ function subscribe(client: AsyncMqttClient) {
 }
 
 function publish(client: AsyncMqttClient, result: string) {
-  client.publish(subscribeTopic, result, {
+  client.publish(publishTopicForResult, result, {
     qos: MqttQoS.EXACTLY_ONCE,
     retain: true,
     dup: false,

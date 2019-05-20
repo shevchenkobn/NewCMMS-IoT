@@ -47,7 +47,7 @@ Promise.resolve().then(() => require(appRootPath.resolve(config.get('actorModule
     });
 });
 function subscribe(client) {
-    client.subscribe(publishTopicForResult, {
+    client.subscribe(subscribeTopic, {
         qos: mqtt_1.MqttQoS.EXACTLY_ONCE,
         nl: true,
         rap: true,
@@ -59,7 +59,7 @@ function subscribe(client) {
     });
 }
 function publish(client, result) {
-    client.publish(subscribeTopic, result, {
+    client.publish(publishTopicForResult, result, {
         qos: mqtt_1.MqttQoS.EXACTLY_ONCE,
         retain: true,
         dup: false,
