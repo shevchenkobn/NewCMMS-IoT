@@ -104,6 +104,7 @@ function startListening() {
             }
         }
     };
-    listen().catch(err => emitter.emit('error', err)).then(listen);
+    const wrapper = () => listen().catch(err => emitter.emit('error', err)).then(wrapper);
+    wrapper();
 }
 //# sourceMappingURL=index.js.map

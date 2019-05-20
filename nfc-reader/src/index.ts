@@ -110,5 +110,6 @@ function startListening() {
       }
     }
   };
-  listen().catch(err => emitter.emit('error', err)).then(listen);
+  const wrapper = (): any => listen().catch(err => emitter.emit('error', err)).then(wrapper);
+  wrapper();
 }
