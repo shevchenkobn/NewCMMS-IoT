@@ -4,6 +4,7 @@ const events_1 = require("events");
 const config = require("config");
 const exit_handler_1 = require("./exit-handler");
 const mqtt_1 = require("./mqtt");
+const appRootPath = require("app-root-path");
 let requestInProcess = null;
 const physicalAddress = config.get('physicalAddress')
     .split(/[-:.]/)
@@ -11,7 +12,7 @@ const physicalAddress = config.get('physicalAddress')
     .toLowerCase();
 const publishTopic = `triggers/${physicalAddress}`;
 const publishResultTopic = `${publishTopic}/result`;
-Promise.resolve().then(() => require(config.get('triggerModulePath'))).then(async (triggerModule) => {
+Promise.resolve().then(() => require(appRootPath.resolve(config.get('triggerModulePath')))).then(async (triggerModule) => {
     const emitter = new events_1.EventEmitter();
     emitter.on('error', err => {
         console.error('Trigger module error:', err);

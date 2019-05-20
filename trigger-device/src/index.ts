@@ -4,6 +4,7 @@ import * as config from 'config';
 import { Nullable } from './@types';
 import { bindOnExitHandler, exitGracefully } from './exit-handler';
 import { getMqttClient, MqttQoS } from './mqtt';
+import * as appRootPath from 'app-root-path';
 
 export interface ITriggerEventEmitter extends EventEmitter {
   on(event: 'data', listener: (data: string) => void): this;
@@ -24,7 +25,9 @@ const physicalAddress = config.get<string>('physicalAddress')
 const publishTopic = `triggers/${physicalAddress}`;
 const publishResultTopic = `${publishTopic}/result`;
 
-import(config.get<string>('triggerModulePath')).then(async (triggerModule: ITriggerModule) => {
+import(
+  appRootPath.resolve(config.get<string>('triggerModulePath'))
+).then(async (triggerModule: ITriggerModule) => {
   const emitter = new EventEmitter() as ITriggerEventEmitter;
   emitter.on('error', err => {
     console.error('Trigger module error:', err);
