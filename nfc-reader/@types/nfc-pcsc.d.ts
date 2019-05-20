@@ -1,0 +1,3 @@
+declare module 'nfc-pcsc' {
+
+}
