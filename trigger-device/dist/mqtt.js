@@ -26,7 +26,7 @@ function getMqttClient(onConnect) {
     const options = {
         clientId,
         will: {
-            topic: '/servers',
+            topic: 'triggers',
             payload: `${clientId}:disconnected`,
             retain: true,
             qos: MqttQoS.EXACTLY_ONCE,
