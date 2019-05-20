@@ -74,7 +74,28 @@ function startListening() {
     // nfcReader.poll();
     n.on('read', (tag) => {
         console.info(tag);
-        emitter.emit('data', tag.data);
+        if (!tag.data) {
+            emitter.emit('no-data', tag);
+            return;
+        }
+        const offsetPresent = typeof tag.offset === 'number';
+        try {
+            const buffer = offsetPresent
+                ? tag.data.slice(tag.offset)
+                : tag.data;
+            emitter.emit('data', nfc_1.nfc.parse(buffer));
+        }
+        catch (err) {
+            emitter.emit('error', err);
+            if (offsetPresent) {
+                emitter.emit('raw-data', tag.buffer, tag.offset);
+            }
+            else {
+                emitter.emit('raw-data', tag.data);
+            }
+        }
+    }).on('stopped', (...args) => {
+        console.log('stopped', args);
     }).on('error', (err) => {
         emitter.emit(err);
     }).start();

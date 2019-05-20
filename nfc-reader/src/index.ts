@@ -1,5 +1,6 @@
 
 import { nfc } from 'nfc';
+// import { decodeMessage, text } from 'ndef';
 // import { NFCReader } from 'libnfc-js';
 // import * as Freefare from 'freefare';
 import { Nullable } from './@types';
@@ -82,7 +83,26 @@ function startListening() {
   // nfcReader.poll();
   n.on('read', (tag: any) => {
     console.info(tag);
-    emitter.emit('data', tag.data);
+    if (!tag.data) {
+      emitter.emit('no-data', tag);
+      return;
+    }
+    const offsetPresent = typeof tag.offset === 'number';
+    try {
+      const buffer: Buffer = offsetPresent
+        ? tag.data.slice(tag.offset)
+        : tag.data;
+      emitter.emit('data', nfc.parse(buffer));
+    } catch (err) {
+      emitter.emit('error', err);
+      if (offsetPresent) {
+        emitter.emit('raw-data', tag.buffer, tag.offset);
+      } else {
+        emitter.emit('raw-data', tag.data);
+      }
+    }
+  }).on('stopped', (...args: any[]) => {
+    console.log('stopped', args);
   }).on('error', (err: any) => {
     emitter.emit(err);
   }).start();
